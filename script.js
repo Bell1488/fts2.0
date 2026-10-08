@@ -73,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const response = await fetch('/api/leads', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone: phoneInput.value.trim(), cny: Number(cnyInput?.value) || 0, direction: activeDirection }) });
       if (!response.ok) throw new Error('lead request failed');
+      window.trackMetrikaGoal?.('form_submit', { direction: activeDirection, cny: Number(cnyInput?.value) || 0 });
       leadStatus.textContent = 'Заявка отправлена. Менеджер свяжется с вами в Telegram.';
       leadStatus.className = 'form-status success';
       leadForm.reset();
