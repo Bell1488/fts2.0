@@ -230,11 +230,20 @@ h1 strong, h2 strong { color: var(--blue); font-weight: 700; }
   .main-nav a.active::after { display: none; }
   .nav-cta { display: none; }
   .hero { padding: 53px 0 56px; }
+  .hero-grid { display: grid; grid-template-columns: 1fr; gap: 0; }
+  .hero-copy { display: contents; }
+  .hero-copy .eyebrow { grid-column: 1; grid-row: 1; }
+  .hero-copy h1 { grid-column: 1; grid-row: 2; }
+  .hero-offer { grid-column: 1; grid-row: 3; }
+  .hero-lead { display: none; }
+  .calculator-card { grid-column: 1; grid-row: 4; margin-top: 33px; }
+  .hero-points { grid-column: 1; grid-row: 5; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 20px; }
+  .hero-points > div { min-width: 0; gap: 5px; font-size: 9px; line-height: 1.28; }
+  .hero-points svg { width: 15px; height: 15px; }
+  .hero-points b { font-size: 10px; }
+  .hero-links { grid-column: 1; grid-row: 6; margin-top: 24px; }
   h1 { font-size: 39px; }
-  .hero-lead { font-size: 15px; }
   .hero-offer { margin-top: -6px; padding: 13px 14px; font-size: 12px; }
-  .hero-points { gap: 14px; }
-  .hero-points > div { flex: 1 1 135px; }
   .calculator-card { padding: 18px; }
   .lead-row { flex-direction: column; }
   .lead-row .button { width: 100%; }
