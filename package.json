@@ -1,0 +1,13 @@
+{
+  "name": "fts-pay-cny-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2",
+    "socks-proxy-agent": "^8.0.5"
+  }
+}
