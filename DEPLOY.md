@@ -20,36 +20,34 @@ dig +short fts-pay.cc
 ## 2. Подготовка сервера
 
 ```bash
-sudo apt update
-sudo apt install -y git nginx certbot python3-certbot-nginx
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt install -y nodejs
+apt update
+apt install -y git nginx certbot python3-certbot-nginx
+curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+apt install -y nodejs
 node --version
 ```
 
-Создайте отдельного пользователя и каталог приложения:
+Создайте каталог приложения:
 
 ```bash
-sudo adduser --system --group --home /var/www/fts-pay fts-pay
-sudo mkdir -p /var/www/fts-pay
-sudo chown -R fts-pay:fts-pay /var/www/fts-pay
+mkdir -p /var/www/fts-pay
 ```
 
 ## 3. Загрузка проекта
 
 ```bash
-sudo -u fts-pay git clone https://github.com/Bell1488/fts2.0.git /var/www/fts-pay
+git clone https://github.com/Bell1488/fts2.0.git /var/www/fts-pay
 cd /var/www/fts-pay
-sudo -u fts-pay npm ci --omit=dev
+npm ci --omit=dev
 ```
 
 Если каталог уже существует, обновите его так:
 
 ```bash
 cd /var/www/fts-pay
-sudo -u fts-pay git pull --ff-only origin main
-sudo -u fts-pay npm ci --omit=dev
-sudo systemctl restart fts-pay
+git pull --ff-only origin main
+npm ci --omit=dev
+systemctl restart fts-pay
 ```
 
 ## 4. Переменные окружения
@@ -63,11 +61,10 @@ TELEGRAM_CHAT_ID=-1000000000000
 SOCKS5H_PROXY=socks5h://user:password@127.0.0.1:1080
 ```
 
-Права на файл должны быть доступны только пользователю приложения:
+Ограничьте доступ к файлу:
 
 ```bash
-sudo chown fts-pay:fts-pay /var/www/fts-pay/.env
-sudo chmod 600 /var/www/fts-pay/.env
+chmod 600 /var/www/fts-pay/.env
 ```
 
 Прокси должен быть доступен с сервера по указанному адресу. Токен бота и chat ID не публикуйте в Git.
@@ -83,8 +80,6 @@ After=network.target
 
 [Service]
 Type=simple
-User=fts-pay
-Group=fts-pay
 WorkingDirectory=/var/www/fts-pay
 EnvironmentFile=/var/www/fts-pay/.env
 ExecStart=/usr/bin/node /var/www/fts-pay/server.js
@@ -100,10 +95,10 @@ WantedBy=multi-user.target
 Активируйте сервис:
 
 ```bash
-sudo systemctl daemon-reload
-sudo systemctl enable --now fts-pay
-sudo systemctl status fts-pay
-sudo journalctl -u fts-pay -f
+systemctl daemon-reload
+systemctl enable --now fts-pay
+systemctl status fts-pay
+journalctl -u fts-pay -f
 ```
 
 ## 6. Nginx
@@ -130,9 +125,9 @@ server {
 Включите сайт и проверьте конфигурацию:
 
 ```bash
-sudo ln -s /etc/nginx/sites-available/fts-pay.cc /etc/nginx/sites-enabled/fts-pay.cc
-sudo nginx -t
-sudo systemctl reload nginx
+ln -s /etc/nginx/sites-available/fts-pay.cc /etc/nginx/sites-enabled/fts-pay.cc
+nginx -t
+systemctl reload nginx
 ```
 
 ## 7. HTTPS
@@ -140,8 +135,8 @@ sudo systemctl reload nginx
 После того как домен указывает на сервер:
 
 ```bash
-sudo certbot --nginx -d fts-pay.cc -d www.fts-pay.cc
-sudo systemctl status certbot.timer
+certbot --nginx -d fts-pay.cc -d www.fts-pay.cc
+systemctl status certbot.timer
 ```
 
 Certbot добавит перенаправление HTTP на HTTPS и настроит автоматическое продление сертификата.
@@ -156,17 +151,17 @@ curl -sS -o /dev/null -w "%{http_code}\n" https://fts-pay.cc/
 Форма заявки должна отправляться только после заполнения телефона и согласия на обработку данных. При ошибке смотрите журнал:
 
 ```bash
-sudo journalctl -u fts-pay --since "10 minutes ago"
+journalctl -u fts-pay --since "10 minutes ago"
 ```
 
 ## 9. Обновление после push
 
 ```bash
 cd /var/www/fts-pay
-sudo -u fts-pay git pull --ff-only origin main
-sudo -u fts-pay npm ci --omit=dev
-sudo systemctl restart fts-pay
-sudo systemctl is-active fts-pay
+git pull --ff-only origin main
+npm ci --omit=dev
+systemctl restart fts-pay
+systemctl is-active fts-pay
 ```
 
 Перед каждым обновлением убедитесь, что `.env` не отслеживается Git и содержит актуальные Telegram-реквизиты.
