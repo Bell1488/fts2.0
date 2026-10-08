@@ -59,6 +59,8 @@ h1, h2 { font-family: 'Space Grotesk', sans-serif; letter-spacing: -.9px; line-h
 h1 { max-width: 680px; margin: 21px 0 21px; font-size: clamp(38px, 4.3vw, 63px); }
 h1 strong, h2 strong { color: var(--blue); font-weight: 700; }
 .hero-lead { max-width: 600px; margin-bottom: 32px; color: var(--muted); font-size: 17px; line-height: 1.75; }
+.hero-offer { max-width: 630px; margin: -8px 0 29px; padding: 15px 17px; border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; color: #3d4b68; background: rgba(244,122,62,.1); font-size: 13px; line-height: 1.6; }
+.hero-offer strong { color: var(--ink); font-weight: 800; }
 .hero-points { display: flex; flex-wrap: wrap; gap: 20px; }
 .hero-points > div { display: flex; align-items: flex-start; gap: 9px; color: var(--muted); font-size: 11px; line-height: 1.42; }
 .hero-points svg { flex: none; color: var(--blue); width: 18px; height: 18px; margin-top: 1px; }
@@ -230,6 +232,7 @@ h1 strong, h2 strong { color: var(--blue); font-weight: 700; }
   .hero { padding: 53px 0 56px; }
   h1 { font-size: 39px; }
   .hero-lead { font-size: 15px; }
+  .hero-offer { margin-top: -6px; padding: 13px 14px; font-size: 12px; }
   .hero-points { gap: 14px; }
   .hero-points > div { flex: 1 1 135px; }
   .calculator-card { padding: 18px; }
