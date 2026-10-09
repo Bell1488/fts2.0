@@ -1,6 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
   if (window.lucide) lucide.createIcons();
 
+  // Keep the blog discoverable from all existing pages without duplicating markup.
+  const nav = document.querySelector('#main-nav');
+  if (nav && !nav.querySelector('a[href="blog.html"]')) {
+    const blogLink = document.createElement('a');
+    blogLink.href = 'blog.html';
+    blogLink.textContent = 'Блог';
+    nav.insertBefore(blogLink, nav.querySelector('a[href="offer.html"]') || null);
+  }
+  document.querySelectorAll('.footer-col').forEach((column) => {
+    if (column.querySelector('a[href="blog.html"]')) return;
+    const heading = column.querySelector('b');
+    if (heading?.textContent.trim() !== 'Навигация') return;
+    const blogLink = document.createElement('a');
+    blogLink.href = 'blog.html';
+    blogLink.textContent = 'Блог';
+    column.insertBefore(blogLink, column.querySelector('a[href="index.html#faq"]') || null);
+  });
+
   const cnyInput = document.querySelector('#cny-input');
   const rubTotal = document.querySelector('#rub-total');
   const rateDisplay = document.querySelector('#rate-display');
