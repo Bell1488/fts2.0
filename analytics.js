@@ -28,5 +28,30 @@ window.trackMetrikaGoal = function (goal, params) {
 
 document.addEventListener('click', function (event) {
   var link = event.target.closest('a[href*="t.me/FTSPay_Support"]');
-  if (link) window.trackMetrikaGoal('messenger_click', { href: link.href });
+  if (!link) return;
+
+  window.trackMetrikaGoal('messenger_click', { href: link.href });
+
+  var isTouchDevice = navigator.maxTouchPoints > 1;
+  var isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && isTouchDevice);
+  if (!isMobile) return;
+
+  event.preventDefault();
+  var telegramUrl = 'tg://resolve?domain=FTSPay_Support';
+  try {
+    var message = new URL(link.href).searchParams.get('text');
+    if (message) telegramUrl += '&text=' + encodeURIComponent(message);
+  } catch (error) { /* Keep the direct manager link if the URL cannot be parsed. */ }
+
+  var fallbackTimer = window.setTimeout(function () {
+    if (document.visibilityState === 'visible') window.location.href = link.href;
+  }, 1400);
+  var cancelFallback = function () { window.clearTimeout(fallbackTimer); };
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') cancelFallback();
+  }, { once: true });
+  window.addEventListener('blur', cancelFallback, { once: true });
+  window.addEventListener('pagehide', cancelFallback, { once: true });
+  window.location.href = telegramUrl;
 });
